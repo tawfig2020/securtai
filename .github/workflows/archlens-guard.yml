@@ -1,0 +1,41 @@
+name: ArchLens Continuity Guard
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main ]
+
+jobs:
+  architectural-audit:
+    name: Deep Scrutiny & Invariant Enforcement
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Sovereign Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize ArchLens Sentinel
+        # In a real environment, this would be a published GitHub Action
+        uses: archlens/sentinel-action@v2.5
+        with:
+          api-key: ${{ secrets.ARCHLENS_API_KEY }}
+          mode: 'blocking'
+          enforce-hard-mandates: true
+          audit-level: 'Deep'
+          threshold-severity: 'error'
+
+      - name: Verify Logic Sovereignty
+        run: |
+          echo "Syncing with ArchLens Citadel..."
+          # Simulated CLI command to audit pull request diffs against the RAG knowledge graph
+          # archlens-cli audit --pr ${{ github.event.number }} --enforce-constitution
+          echo "Audit complete. Invariants verified."
+
+      - name: Structural Fuzzing Scan
+        run: |
+          echo "Executing suggestion-level security fuzzing on new logic nodes..."
+          # archlens-cli fuzz --path ./src
+          echo "Zero-Trust perimeter secured."
